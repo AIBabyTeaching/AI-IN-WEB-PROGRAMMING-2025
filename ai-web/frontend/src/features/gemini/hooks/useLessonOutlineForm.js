@@ -36,7 +36,13 @@ export function useLessonOutlineForm() {
         setOutline(Array.isArray(response.outline) ? response.outline : []);
       } catch (err) {
         setOutline([]);
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        const detailMessage =
+          typeof err?.detail === 'string'
+            ? err.detail
+            : err instanceof Error && err.message
+              ? err.message
+              : 'Unknown error';
+        setError(detailMessage);
       } finally {
         setLoading(false);
       }

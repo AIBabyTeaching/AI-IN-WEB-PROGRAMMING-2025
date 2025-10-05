@@ -68,7 +68,7 @@ def generate_lesson_outline(topic: str, model: str | None = None) -> dict[str, s
 
     normalized_topic = topic.strip()
     if not normalized_topic:
-        raise GeminiServiceError("Topic must not be empty.")
+        raise ValueError("Topic must not be empty.")
 
     api_key = _require_api_key()
     _configure_client(api_key)
@@ -85,7 +85,11 @@ def generate_lesson_outline(topic: str, model: str | None = None) -> dict[str, s
         response = generative_model.generate_content(prompt)
         outline_text = getattr(response, "text", "").strip()
     except Exception as exc:  # pragma: no cover - depends on remote API.
-        raise GeminiServiceError("Failed to generate lesson outline.") from exc
+        raw_message = str(exc).strip()
+        detail = f": {raw_message}" if raw_message else ""
+        raise GeminiServiceError(
+            f"Failed to generate lesson outline{detail}."
+        ) from exc
 
     outline = _parse_outline_lines(outline_text) if outline_text else []
     return {"topic": normalized_topic, "outline": outline}

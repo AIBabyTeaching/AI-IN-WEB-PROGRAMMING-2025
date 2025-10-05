@@ -18,7 +18,39 @@ export async function post(path, body) {
   });
   if (!res.ok) {
     // Propagate a descriptive error so callers can surface the failure in the UI.
-    throw new Error(`HTTP ${res.status}`);
+    let message = `HTTP ${res.status}`;
+    let detail;
+    const contentType = res.headers.get('content-type') || '';
+
+    try {
+      if (contentType.includes('application/json')) {
+        const data = await res.json();
+        detail = typeof data?.detail === 'string'
+          ? data.detail
+          : Array.isArray(data?.detail)
+            ? data.detail.map((item) => item?.msg).filter(Boolean).join('; ')
+            : undefined;
+        if (!detail && typeof data?.message === 'string') {
+          detail = data.message;
+        }
+      } else {
+        const text = await res.text();
+        detail = text.trim() || undefined;
+      }
+    } catch (parseError) {
+      // Ignore body parsing errors; fall back to the default message.
+    }
+
+    if (detail) {
+      message = detail;
+    }
+
+    const error = new Error(message);
+    error.status = res.status;
+    if (detail) {
+      error.detail = detail;
+    }
+    throw error;
   }
   return res.json();
 }
