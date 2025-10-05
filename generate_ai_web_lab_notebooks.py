@@ -113,7 +113,7 @@ base.mkdir(parents=True, exist_ok=True)
 uvicorn[standard]
 pydantic
 python-dotenv
-google-genai
+google-generativeai
 faiss-cpu
 numpy
 ''')
@@ -500,7 +500,7 @@ The following commands are intended for local execution.
 ```bash
 cd ai-web/backend
 . .venv/bin/activate
-pip install google-genai
+pip install google-generativeai
 ```
 """
     ),
@@ -938,7 +938,7 @@ The following commands are intended for local execution.
 ```bash
 cd ai-web/backend
 . .venv/bin/activate
-pip install faiss-cpu google-genai numpy
+pip install faiss-cpu google-generativeai numpy
 ```
 """
         ),
@@ -1102,7 +1102,7 @@ The following commands are intended for local execution.
 ```bash
 cd ai-web/backend
 . .venv/bin/activate
-pip install google-genai
+pip install google-generativeai
 ```
 """
         ),
@@ -1460,7 +1460,7 @@ The following commands are intended for local execution.
 ```bash
 cd ai-web/backend
 . .venv/bin/activate
-pip install google-genai
+pip install google-generativeai
 ```
 """
         ),

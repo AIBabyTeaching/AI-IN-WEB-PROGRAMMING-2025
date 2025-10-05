@@ -9,6 +9,7 @@ __pycache__/
 .venv/
 .env
 .env.*
+!ai-web/backend/.env
 
 # Build artifacts
 dist/
